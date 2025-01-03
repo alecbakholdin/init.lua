@@ -20,7 +20,7 @@ return {
 	    })
 
 	    local cmp = require('cmp')
-	    require('mason')
+	    require('mason').setup()
 	    require('mason-lspconfig').setup({
 		ensure_installed = {
 			"lua_ls"
