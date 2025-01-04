@@ -20,7 +20,10 @@ vim.opt.undofile = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+vim.opt.cursorline = true
+
 vim.opt.termguicolors = true
+vim.cmd.highlight(':highlight ModeMsg guifg=#00ff00 guibg=#ff00ff') 
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
