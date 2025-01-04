@@ -1,14 +1,17 @@
 function ColorMyPencils(color)
-	color = color or "tokyonight"
-	vim.cmd.colorscheme(color)
+	vim.cmd.colorscheme(color or "tokyonight")
 end
 
 return {
-	"folke/tokyonight.nvim",
-	lazy = false,
-	opts = {},
-	config = function() 
-		ColorMyPencils()
-	end
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        opts = {
+            transparent = false,
+        },
+        config = function()
+            ColorMyPencils()
+        end,
+    },
 }
 

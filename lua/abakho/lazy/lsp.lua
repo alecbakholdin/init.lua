@@ -56,6 +56,18 @@ return {
                         }
                     })
                 end,
+                ["tailwindcss"] = function()
+                    local lspconfig = require('lspconfig')
+                    lspconfig.tailwindcss.setup ({
+                        capabilities = capabilities,
+                        root_dir = function(fname)
+                            local root_path = require('lspconfig').util.root_pattern(
+                                'tailwind.config.*'
+                            )
+                            return root_path(fname)
+                        end
+                    })
+                end
             },
 	    })
 
