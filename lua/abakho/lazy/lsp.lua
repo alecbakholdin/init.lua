@@ -35,6 +35,7 @@ return {
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				go = { "goimports" },
+                xml = { "xmlformatter" },
 			},
 			format_on_save = format_action_config,
 		})
