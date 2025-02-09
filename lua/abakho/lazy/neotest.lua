@@ -18,11 +18,21 @@ return {
 				end,
 			},
 		}, neotest_ns)
-		require("neotest").setup({
+		local neotest = require("neotest")
+		neotest.setup({
 			-- your neotest config here
 			adapters = {
 				require("neotest-go"),
 			},
 		})
+		vim.keymap.set("n", "<leader>tt", function()
+			neotest.run.run()
+		end, { desc = "Test current test" })
+		vim.keymap.set("n", "<leader>tf", function()
+			neotest.run.run(vim.fn.expand("%"))
+		end, { desc = "Test current file" })
+		vim.keymap.set("n", "<leader>tw", function()
+			neotest.output.open({ enter = true })
+		end, { desc = "Test window open" })
 	end,
 }
