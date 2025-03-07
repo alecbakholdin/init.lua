@@ -10,6 +10,9 @@ vim.opt.expandtab = true
 
 vim.opt.smartindent = true
 
+vim.opt.foldlevel = 100
+vim.opt.foldmethod = "indent"
+
 vim.opt.wrap = false
 
 vim.opt.swapfile = false
@@ -23,7 +26,7 @@ vim.opt.incsearch = true
 vim.opt.cursorline = true
 
 vim.opt.termguicolors = true
-vim.cmd('highlight ModeMsg guifg=#00ff00 guibg=#ff00ff')
+vim.cmd("highlight ModeMsg guifg=#00ff00 guibg=#ff00ff")
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
