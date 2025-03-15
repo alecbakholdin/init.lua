@@ -14,7 +14,6 @@ return {
 		"j-hui/fidget.nvim",
 	},
 	config = function()
-		local conform = require("conform")
 		local format_action_config = {
 			lsp_fallback = true,
 			async = false,
@@ -35,13 +34,10 @@ return {
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				go = { "goimports" },
-                xml = { "xmlformatter" },
+				xml = { "xmlformatter" },
 			},
 			format_on_save = format_action_config,
 		})
-		vim.keymap.set({ "n", "v" }, "<leader>ff", function()
-			conform.format(format_action_config)
-		end, { desc = "Format file or range (in visual mode)" })
 
 		local cmp = require("cmp")
 		local cmp_lsp = require("cmp_nvim_lsp")
@@ -92,6 +88,17 @@ return {
 						capabilities = capabilities,
 						root_dir = function(fname)
 							local root_path = require("lspconfig").util.root_pattern("tailwind.config.*")
+							return root_path(fname)
+						end,
+					})
+				end,
+
+				["ts_ls"] = function()
+					local lspconfig = require("lspconfig")
+					lspconfig.ts_ls.setup({
+						capabilities = capabilities,
+						root_dir = function(fname)
+							local root_path = lspconfig.util.root_pattern("tsconfig.json")
 							return root_path(fname)
 						end,
 					})
