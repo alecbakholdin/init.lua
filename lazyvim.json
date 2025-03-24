@@ -2,7 +2,12 @@
   "extras": [
     "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.formatting.prettier",
+    "lazyvim.plugins.extras.lang.git",
     "lazyvim.plugins.extras.lang.go",
+    "lazyvim.plugins.extras.lang.java",
+    "lazyvim.plugins.extras.lang.sql",
+    "lazyvim.plugins.extras.lang.svelte",
+    "lazyvim.plugins.extras.lang.tailwind",
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.test.core"
   ],
@@ -10,5 +15,5 @@
   "news": {
     "NEWS.md": "10960"
   },
-  "version": 8
+  "version": 7
 }
