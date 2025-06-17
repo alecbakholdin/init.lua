@@ -1,9 +1,9 @@
 {
   "extras": [
+    "lazyvim.plugins.extras.coding.blink",
     "lazyvim.plugins.extras.coding.neogen",
-    "lazyvim.plugins.extras.coding.nvim-cmp",
+    "lazyvim.plugins.extras.coding.yanky",
     "lazyvim.plugins.extras.dap.core",
-    "lazyvim.plugins.extras.editor.fzf",
     "lazyvim.plugins.extras.editor.harpoon2",
     "lazyvim.plugins.extras.editor.neo-tree",
     "lazyvim.plugins.extras.formatting.prettier",
@@ -18,7 +18,9 @@
     "lazyvim.plugins.extras.lang.tailwind",
     "lazyvim.plugins.extras.lang.toml",
     "lazyvim.plugins.extras.lang.typescript",
-    "lazyvim.plugins.extras.test.core"
+    "lazyvim.plugins.extras.linting.eslint",
+    "lazyvim.plugins.extras.test.core",
+    "lazyvim.plugins.extras.util.mini-hipatterns"
   ],
   "install_version": 7,
   "news": {

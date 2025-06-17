@@ -27,6 +27,7 @@ return {
       neotest.setup({
         adapters = {
           require("neotest-vitest")({
+            vitestCommand = "vitest --disable-console-intercept",
             cwd = get_root_dir(),
             filter_dir = function(name, rel_path, root)
               return name ~= "node_modules"
