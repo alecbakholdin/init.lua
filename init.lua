@@ -20,6 +20,11 @@ vim.o.updatetime = 50
 --vim.o.winborder = "rounded"
 vim.o.wrap = false
 
+vim.g.db_ui_use_nerd_fonts = 1
+--vim.g.db_ui_auto_execute_table_helpers = 0
+--vim.g.db_ui_use_live_queries = 0
+vim.g.db_ui_execute_on_save = 0
+
 -- utillity functions
 local function run_command_in_dir(command, directory)
 	local current_dir = vim.fn.getcwd() -- Store current directory
@@ -83,7 +88,7 @@ vim.pack.add({
 	{ src = "https://github.com/MunifTanjim/nui.nvim" },
 	{ src = "https://github.com/nvim-lualine/lualine.nvim" },
 })
-require("notify").setup({ max_width = 60 })
+require("notify").setup({ max_width = 60, merge_duplicates = true })
 require("noice").setup()
 vim.notify = require("noice").notify
 require("lualine").setup({})
@@ -131,7 +136,7 @@ vim.keymap.set("n", "<leader>tr", telescope.resume)
 -- lsp and formatting
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "stylua", "ts_ls", "eslint", "svelte", "jsonls" },
+	ensure_installed = { "lua_ls", "stylua", "ts_ls", "eslint", "svelte", "jsonls", "tailwindcss" },
 	automatic_installation = true,
 	automatic_enable = true,
 })
@@ -156,7 +161,6 @@ require("conform").setup({
 		svelte = { "prettierd" },
 	},
 })
-vim.g.db_ui_use_nerd_fonts = 1
 
 vim.keymap.set("n", "gr", telescope.lsp_references)
 vim.keymap.set("n", "gs", telescope.lsp_dynamic_workspace_symbols, { desc = "[f]ind [s]ymbols" })
@@ -237,6 +241,7 @@ require("blink.cmp").setup({
 			"fallback",
 		},
 		["<Enter>"] = { "select_and_accept", "fallback" },
+		["<C-BS>"] = { "fallback" },
 	},
 	appearance = {
 		nerd_font_variant = "mono",
@@ -260,6 +265,8 @@ require("blink.cmp").setup({
 require("which-key").add({ { "<leader>S", group = "SQL" } })
 vim.keymap.set("n", "<leader>su", vim.cmd.DBUI, { desc = "SQL UI" })
 vim.keymap.set("n", "<leader>sb", vim.cmd.DBUIFindBuffer, { desc = "Attach Buffer" })
+
+-- sql
 
 -- nvim-tree
 require("nvim-tree").setup({
@@ -285,14 +292,18 @@ end)
 -- toggleterm
 require("toggleterm").setup()
 vim.keymap.set({ "n", "i", "t" }, "<C-/>", vim.cmd.ToggleTerm, { desc = "Toggle Terminal" })
+vim.keymap.set({ "n", "i", "t" }, "<C-_>", vim.cmd.ToggleTerm, { desc = "Toggle Terminal" })
 function _G.set_terminal_keymaps()
-	local opts = { buffer = 0 }
-	vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+	if string.find(vim.api.nvim_buf_get_name(0), "toggleterm") == nil then
+		return
+	end
 	--vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+	local opts = { buffer = 0 }
+	vim.keymap.set("t", "<esc>", [[<C-/><C-n>]], opts)
 	vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
 	vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
 	vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
 	vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-	vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
+	--vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 end
 vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
