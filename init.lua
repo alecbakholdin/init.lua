@@ -33,10 +33,32 @@ local function run_command_in_dir(command, directory)
 	vim.cmd("cd " .. current_dir) -- Revert to original directory
 	return output
 end
+local function dump(o)
+	if type(o) == "table" then
+		local s = "{ "
+		for k, v in pairs(o) do
+			if type(k) ~= "number" then
+				k = '"' .. k .. '"'
+			end
+			s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+		end
+		return s .. "} "
+	else
+		return tostring(o)
+	end
+end
 local function vim_cmd(cmd)
 	return function()
 		vim.cmd(cmd)
 	end
+end
+local function get_plugin(name)
+	for _, v in pairs(vim.pack.get()) do
+		if v.spec.name == name then
+			return v
+		end
+	end
+	return nil
 end
 
 --keymaps
@@ -120,7 +142,10 @@ require("telescope").setup({
 		},
 	},
 })
-run_command_in_dir("make", vim.pack.get({ "telescope-fzf-native" })[1].path)
+local fzfPath = get_plugin("telescope-fzf-native")
+if fzfPath ~= nil then
+	run_command_in_dir("make", fzfPath)
+end
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("ui-select")
 require("telescope").load_extension("frecency")
