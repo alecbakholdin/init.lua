@@ -144,7 +144,7 @@ require("telescope").setup({
 })
 local fzfPath = get_plugin("telescope-fzf-native")
 if fzfPath ~= nil then
-	run_command_in_dir("make", fzfPath)
+	run_command_in_dir("make", fzfPath.path)
 end
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("ui-select")
