@@ -109,11 +109,16 @@ vim.pack.add({
 	{ src = "https://github.com/rcarriga/nvim-notify" },
 	{ src = "https://github.com/MunifTanjim/nui.nvim" },
 	{ src = "https://github.com/nvim-lualine/lualine.nvim" },
+	{ src = "https://github.com/yavorski/lualine-macro-recording.nvim" },
 })
 require("notify").setup({ max_width = 60, merge_duplicates = true })
 require("noice").setup()
 vim.notify = require("noice").notify
-require("lualine").setup({})
+require("lualine").setup({
+	sections = {
+		lualine_c = { "macro_recording", "%S" },
+	},
+})
 
 vim.cmd.colorscheme("tokyonight")
 
