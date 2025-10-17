@@ -102,6 +102,7 @@ vim.pack.add({
 	{ src = "https://github.com/kdheepak/lazygit.nvim" },
 	{ src = "https://github.com/nvim-tree/nvim-tree.lua" },
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
+	{ src = "https://github.com/nvim-svelte/nvim-svelte-check" },
 
 	-- ui niceties
 	{ src = "https://github.com/folke/which-key.nvim", version = "v3.17.0" },
@@ -232,6 +233,7 @@ vim.keymap.set("n", "[i", prev_severity(vim.diagnostic.severity.INFO), { desc = 
 vim.diagnostic.config({ virtual_text = true })
 
 -- autocomplete
+require("svelte-check").setup()
 require("lazydev").setup()
 require("luasnip").setup()
 require("nvim-svelte-snippets").setup({
