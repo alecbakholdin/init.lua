@@ -75,6 +75,7 @@ vim.keymap.set("n", "<leader>lg", vim.cmd.LazyGit)
 vim.pack.add({
 	{ src = "https://github.com/folke/tokyonight.nvim", name = "tokyonight" },
 	{ src = "https://github.com/tpope/vim-surround" },
+	{ src = "https://github.com/olrtg/nvim-emmet" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 	{ src = "https://github.com/akinsho/toggleterm.nvim" },
 
@@ -167,7 +168,16 @@ vim.keymap.set("n", "<leader>tr", telescope.resume)
 -- lsp and formatting
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "stylua", "ts_ls", "eslint", "svelte", "jsonls", "tailwindcss" },
+	ensure_installed = {
+		"lua_ls",
+		"stylua",
+		"ts_ls",
+		"eslint",
+		"svelte",
+		"jsonls",
+		"tailwindcss",
+		"emmet_language_server",
+	},
 	automatic_installation = true,
 	automatic_enable = true,
 })
@@ -191,6 +201,18 @@ require("conform").setup({
 		typescriptreact = { "prettierd" },
 		svelte = { "prettierd" },
 	},
+})
+
+local lsp_keybinds_group = vim.api.nvim_create_augroup("UserLspKeybinds", { clear = true })
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = lsp_keybinds_group,
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+		if client and client.name == "emmet_language_server" then
+			vim.keymap.set("v", "St", require("nvim-emmet").wrap_with_abbreviation, { buffer = args.buf })
+		end
+	end,
 })
 
 vim.keymap.set("n", "gr", telescope.lsp_references)
