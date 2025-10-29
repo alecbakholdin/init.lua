@@ -177,10 +177,43 @@ require("mason-lspconfig").setup({
 		"jsonls",
 		"tailwindcss",
 		"emmet_language_server",
+		"denols",
 	},
 	automatic_installation = true,
 	automatic_enable = true,
 })
+local util = require("lspconfig.util")
+local get_deno_root = util.root_pattern("deno.json", "deno.jsonc")
+local get_ts_root = util.root_pattern("package.json", "tsconfig.json")
+vim.lsp.config("denols", {
+	root_dir = function(buf, on_dir)
+		local fname = vim.api.nvim_buf_get_name(buf)
+		local ts_root = get_ts_root(fname)
+		local deno_root = get_deno_root(fname)
+		if deno_root and not ts_root then
+			on_dir(deno_root)
+		elseif deno_root and ts_root and string.len(deno_root) > string.len(ts_root) then
+			on_dir(deno_root)
+		end
+	end,
+	single_file_support = false,
+})
+vim.lsp.config("ts_ls", {
+	root_dir = function(buf, on_dir)
+		local fname = vim.api.nvim_buf_get_name(buf)
+		local ts_root = get_ts_root(fname)
+		local deno_root = get_deno_root(fname)
+
+		vim.notify("testing")
+		if ts_root and not deno_root then
+			on_dir(ts_root)
+		elseif deno_root and ts_root and string.len(ts_root) > string.len(deno_root) then
+			on_dir(ts_root)
+		end
+	end,
+	single_file_support = false,
+})
+
 require("mason-null-ls").setup({
 	ensure_installed = { "jq", "djlint", "prettierd", "emmet" },
 	automatic_installation = true,
