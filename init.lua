@@ -178,6 +178,7 @@ require("mason-lspconfig").setup({
 		"tailwindcss",
 		"emmet_language_server",
 		"denols",
+		"gopls",
 	},
 	automatic_installation = true,
 	automatic_enable = true,
@@ -215,7 +216,7 @@ vim.lsp.config("ts_ls", {
 })
 
 require("mason-null-ls").setup({
-	ensure_installed = { "jq", "djlint", "prettierd", "emmet" },
+	ensure_installed = { "jq", "djlint", "prettierd", "emmet", "gofmt" },
 	automatic_installation = true,
 })
 require("conform").setup({
@@ -233,6 +234,7 @@ require("conform").setup({
 		typescript = { "prettierd" },
 		typescriptreact = { "prettierd" },
 		svelte = { "prettierd" },
+		go = { "gofmt" },
 	},
 })
 
