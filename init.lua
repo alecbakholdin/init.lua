@@ -197,6 +197,11 @@ vim.lsp.config("denols", {
 			on_dir(deno_root)
 		end
 	end,
+	init_options = {
+		enable = true,
+		lint = true,
+		unstable = true,
+	},
 	single_file_support = false,
 })
 vim.lsp.config("ts_ls", {
@@ -337,7 +342,7 @@ require("blink.cmp").setup({
 	},
 	completion = {
 		menu = { auto_show = true },
-		documentation = { auto_show = true },
+		documentation = { auto_show = false },
 		trigger = { show_in_snippet = false },
 	},
 	snippets = { preset = "luasnip" },
@@ -348,6 +353,7 @@ require("blink.cmp").setup({
 		},
 		providers = {
 			dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+			lsp = { timeout_ms = 1000 },
 		},
 	},
 })
