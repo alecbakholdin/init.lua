@@ -1,3 +1,6 @@
+if vim.env.SSH_CLIENT or vim.env.SSH_CONNECTION then
+	vim.g.clipboard = "osc52"
+end
 -- general options
 vim.o.completeopt = "menu,menuone,popup,fuzzy" -- modern completion menu
 
