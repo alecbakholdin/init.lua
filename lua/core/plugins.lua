@@ -1,3 +1,8 @@
+if vim.fn.has("nvim-0.12") == 0 then
+	vim.notify("Cannot install plugins on less than 0.12", vim.log.levels.ERROR)
+	return
+end
+
 vim.pack.add({ 'https://github.com/Mofiqul/dracula.nvim' })
 vim.cmd.colorscheme('dracula')
 
