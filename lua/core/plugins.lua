@@ -1,5 +1,5 @@
 if not require('util').isV12() then
-	vim.notify("Cannot install plugins on less than 0.12", vim.log.levels.ERROR)
+	vim.notify("Cannot install plugins on less than 0.12")
 	return
 end
 
