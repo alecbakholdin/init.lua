@@ -3,8 +3,8 @@
 vim.o.completeopt = "fuzzy,menuone,noselect,popup,preview"
 if require('util').isV12() then
 	vim.o.autocomplete = true
+	vim.o.complete = '.,o'
 end
-vim.o.complete = '.,o'
 vim.diagnostic.config({ virtual_text = true })
 
 -- enable configured language servers
