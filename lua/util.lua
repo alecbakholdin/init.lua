@@ -59,4 +59,12 @@ function M.code_action_sync(action_kind)
 	end
 end
 
+function M.isSSH()
+	return vim.env.SSH_CLIENT or vim.env.SSH_CONNECTION
+end
+
+function M.isV12()
+	return vim.fn.has("nvim-0.12") == 1
+end
+
 return M

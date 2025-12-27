@@ -1,7 +1,9 @@
 -- :h lsp-config
 
 vim.o.completeopt = "fuzzy,menuone,noselect,popup,preview"
-vim.o.autocomplete = true
+if require('util').isV12() then
+	vim.o.autocomplete = true
+end
 vim.o.complete = '.,o'
 vim.diagnostic.config({ virtual_text = true })
 
