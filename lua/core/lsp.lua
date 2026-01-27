@@ -11,6 +11,7 @@ vim.diagnostic.config({ virtual_text = true })
 -- you can find server configurations from lsp/*.lua files
 
 vim.lsp.enable('gopls')
+vim.lsp.enable('templ')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('ts_ls')
 --vim.lsp.enable('prettier')
