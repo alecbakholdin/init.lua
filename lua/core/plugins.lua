@@ -24,6 +24,7 @@ vim.keymap.set("n", "<leader>fy", fzf.registers, { desc = "Find in registers (y 
 vim.keymap.set("n", "<leader>fo", fzf.oldfiles, { desc = "Find in old files (recent files)" })
 vim.keymap.set("n", "<leader>fs", fzf.lsp_document_symbols, { desc = "Find document symbols" })
 vim.keymap.set("n", "<leader>fS", fzf.lsp_workspace_symbols, { desc = "Find workspace symbols" })
+vim.keymap.set("n", "<leader>fp", fzf.git_files, { desc = "Find project (Git) files" })
 vim.keymap.set("n", "<leader>fd", function()
 	fzf.files({ cwd = vim.fn.expand("%:p:h") })
 end, { desc = "Find in current buffer's directory" })
