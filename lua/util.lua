@@ -1,5 +1,48 @@
 local M = {}
 
+--- Registers a build command for a specific Neovim plugin managed by vim.pack.
+--- This must be called BEFORE vim.pack.add() to ensure it catches the initial installation.
+--- @param plugin_name string The name of the plugin (e.g., "telescope-fzf-native.nvim").
+--- @param callback table|string|function A shell command ("make"), Vim command (":UpdateRemotePlugins"), or Lua function.
+function M.vim_pack_build(plugin_name, callback)
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "PackChanged",
+		callback = function(ev)
+			-- Match the plugin name from event data
+			if ev.data.spec.name == plugin_name then
+				-- Only build on installation or updates (ignore deletions)
+				if ev.data.kind == "install" or ev.data.kind == "update" then
+					local plugin_path = ev.data.path
+
+					if type(callback) == "string" then
+						-- Handle Vim Commands
+						if callback:sub(1, 1) == ":" then
+							vim.cmd(callback:sub(2)) -- Strip ':' and execute
+							vim.notify("Vim command executed for: " .. plugin_name, vim.log.levels.INFO)
+						else
+							-- Handle System Commands
+							local cmd = vim.split(callback, " ")
+							vim.system(cmd, { cwd = plugin_path }, function(obj)
+								if obj.code == 0 then
+									vim.notify("Build success: " .. plugin_name, vim.log.levels.INFO)
+								else
+									vim.notify(
+										"Build fail: " .. plugin_name .. "\n" .. (obj.stderr or ""),
+										vim.log.levels.ERROR
+									)
+								end
+							end)
+						end
+					elseif type(callback) == "function" then
+						-- Invoke function, passing the event data for context
+						callback(ev)
+					end
+				end
+			end
+		end,
+	})
+end
+
 function M.ensure_binary_installed(bin, install_cmd)
 	if vim.fn.exepath(bin) then
 		-- binary exists already
@@ -7,8 +50,10 @@ function M.ensure_binary_installed(bin, install_cmd)
 	end
 	local install_result = vim.system(install_cmd)
 	if install_result ~= 0 then
-		vim.notify(string.format("Error installing %s:\n", bin) .. M.sanitize_colors(string(install_result.stdout)),
-			vim.log.levels.ERROR)
+		vim.notify(
+			string.format("Error installing %s:\n", bin) .. M.sanitize_colors(string(install_result.stdout)),
+			vim.log.levels.ERROR
+		)
 	end
 end
 
@@ -22,29 +67,29 @@ function M.lua_ls_on_init(client)
 		return
 	end
 	-- override the lua-language-server settings for Neovim config
-	client.settings = vim.tbl_deep_extend('force', client.settings, {
+	client.settings = vim.tbl_deep_extend("force", client.settings, {
 		Lua = {
 			runtime = {
-				version = 'LuaJIT'
+				version = "LuaJIT",
 			},
 			-- Make the server aware of Neovim runtime files
 			workspace = {
 				checkThirdParty = false,
 				library = {
-					vim.env.VIMRUNTIME
+					vim.env.VIMRUNTIME,
 					-- Depending on the usage, you might want to add additional paths here.
 					-- "${3rd}/luv/library"
 					-- "${3rd}/busted/library",
-				}
+				},
 				-- or pull in all of 'runtimepath'. NOTE: this is a lot slower
 				-- library = vim.api.nvim_get_runtime_file("", true)
-			}
-		}
+			},
+		},
 	})
 end
 
 function M.code_action_sync(action_kind)
-	local params = vim.lsp.util.make_range_params(0, 'utf-8')
+	local params = vim.lsp.util.make_range_params(0, "utf-8")
 	params.context = { only = { action_kind }, diagnostics = {} }
 
 	-- buf_request_sync halts execution until the server responds

@@ -1,89 +1,30 @@
-return {
-	"nvim-neotest/neotest",
-	dependencies = {
-		"nvim-neotest/nvim-nio",
-		"nvim-lua/plenary.nvim",
-		"antoinemadec/FixCursorHold.nvim",
-		"nvim-treesitter/nvim-treesitter",
+vim.pack.add({
+	-- installed elsewhere "https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/antoinemadec/FixCursorHold.nvim",
+	"https://github.com/nvim-neotest/nvim-nio",
+	"https://github.com/nvim-neotest/neotest",
 
-		"nvim-neotest/neotest-jest",
-		"marilari88/neotest-vitest",
-		{
-			"fredrikaverpil/neotest-golang",
-			version = "*",
-			build = function()
-				vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait()
+	-- adapters
+	"https://github.com/nvim-neotest/neotest-jest",
+	"https://github.com/marilari88/neotest-vitest",
+})
+
+local neotest = require("neotest")
+neotest.setup({
+	adapters = {
+		require("neotest-jest")({
+			jestCommand = "npm test --",
+			jestArguments = function(defaultArguments, context)
+				return defaultArguments
 			end,
-		},
+			jestConfigFile = "custom.jest.config.ts",
+			env = { CI = true },
+			cwd = function(path)
+				return vim.fn.getcwd()
+			end,
+			isTestFile = require("neotest-jest.jest-util").defaultIsTestFile,
+		}),
+		require("neotest-vitest"),
 	},
-	config = function()
-		require("neotest").setup({
-			adapters = {
-				require("neotest-jest")({
-					jestCommand = "npm test --",
-					jestArguments = function(defaultArguments, _)
-						return defaultArguments
-					end,
-					jestConfigFile = "custom.jest.config.ts",
-					env = { CI = true },
-					cwd = function(_)
-						return vim.fn.getcwd()
-					end,
-					isTestFile = require("neotest-jest.jest-util").defaultIsTestFile,
-				}),
-				require("neotest-vitest"),
-				require("neotest-golang")({ runner = "gotestsum" }),
-			},
-		})
-	end,
-	keys = {
-		{
-			mode = "n",
-			"<leader>tt",
-			function()
-				require("neotest").run.run()
-			end,
-			desc = "Run the nearest test",
-		},
-		{
-			mode = "n",
-			"<leader>ts",
-			function()
-				require("neotest").summary.toggle()
-			end,
-			desc = "Toggle test summary",
-		},
-		{
-			mode = "n",
-			"<leader>tw",
-			function()
-				require("neotest").summary.toggle()
-			end,
-			desc = "Open test output window",
-		},
-		{
-			mode = "n",
-			"<leader>tf",
-			function()
-				require("neotest").run.run(vim.fn.expand("%"))
-			end,
-			desc = "Run all tests in the current file",
-		},
-		{
-			mode = "n",
-			"<leader>td",
-			function()
-				require("neotest").run.run(vim.fn.expand("%:h"))
-			end,
-			desc = "Run all tests in the current directory",
-		},
-		{
-			mode = "n",
-			"<leader>ta",
-			function()
-				require("neotest").run.run(vim.fn.getcwd())
-			end,
-			desc = "Run all tests in project",
-		},
-	},
-}
+})

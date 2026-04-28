@@ -1,11 +1,2 @@
-return {
-	"nvim-treesitter/nvim-treesitter",
-	lazy = false,
-	build = ":TSUpdate",
-	opts = {
-		auto_install = true,
-		highlight = {
-			enable = true,
-		},
-	},
-}
+require("util").vim_pack_build("nvim-treesitter", ":TSUpdate")
+vim.pack.add({ "nvim-treesitter/nvim-treesitter" })

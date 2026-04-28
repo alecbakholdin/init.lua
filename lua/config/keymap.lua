@@ -22,6 +22,7 @@ local function toggleterm()
 		vim.schedule(vim.cmd.startinsert)
 	end
 end
+
 vim.keymap.set("n", "<leader>lg", ":terminal lazygit<CR>")
 vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], { noremap = true })
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { noremap = true })
@@ -43,13 +44,9 @@ local function jump_severity(count, sev)
 	end
 end
 
-vim.keymap.set(
-	"n",
-	"[e",
-	jump_severity(-1, { min = vim.diagnostic.severity.WARN }),
-	{ desc = "Previous Warning/Error" }
-)
-vim.keymap.set("n", "]e", jump_severity(1, { min = vim.diagnostic.severity.WARN }), { desc = "Previous Warning/Error" })
+local warning = vim.diagnostic.severity.WARN
+vim.keymap.set("n", "[e", jump_severity(-1, { min = warning }), { desc = "Previous Warning/Error" })
+vim.keymap.set("n", "]e", jump_severity(1, { min = warning }), { desc = "Next Warning/Error" })
 
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<C-.>", vim.lsp.buf.code_action)

@@ -1,7 +1,9 @@
 if require("util").isSSH() then
 	vim.g.clipboard = "osc52"
 end
-vim.cmd.colorscheme("catppuccin")
+vim.pack.add({{ src="https://github.com/catppuccin/nvim", name="catppuccin"}})
+vim.cmd.colorscheme "catppuccin-frappe"
+
 -- general options
 vim.o.completeopt = "menu,menuone,popup,fuzzy" -- modern completion menu
 
