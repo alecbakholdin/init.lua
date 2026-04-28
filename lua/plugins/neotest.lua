@@ -28,3 +28,16 @@ neotest.setup({
 		require("neotest-vitest"),
 	},
 })
+
+-- return a parameterless function that invokes the passed function with vim.fn.expand('%') when called
+local function current_file(fn)
+	return function()
+		fn(vim.fn.expand("%"))
+	end
+end
+
+vim.keymap.set("n", "<Leader>tt", neotest.run.run, { desc = "Run Nearest Test" })
+vim.keymap.set("n", "<Leader>tf", current_file(neotest.run.run), { desc = "Run Test File" })
+vim.keymap.set("n", "<Leader>ts", neotest.summary.toggle, { desc = "Toggle Summary" })
+vim.keymap.set("n", "<Leader>to", neotest.output_panel.toggle, { desc = "Toggle Output Panel" })
+vim.keymap.set("n", "<Leader>tw", current_file(neotest.watch.toggle), { desc = "Toggle watch for current file" })
