@@ -9,11 +9,11 @@ local function toggleterm()
 
 	if term_buf == nil or term_buf <= 0 then
 		term_buf = vim.api.nvim_create_buf(false, true)
-		vim.api.nvim_command("sbuf " .. term_buf)
+		vim.cmd("belowright sbuffer " .. term_buf)
 		vim.fn.jobstart(os.getenv("SHELL") or "sh", { term = true })
 		vim.schedule(vim.cmd.startinsert)
 	elseif term_win == nil or term_win <= 0 then
-		vim.cmd("below sbuffer " .. term_buf)
+		vim.cmd("belowright sbuffer " .. term_buf)
 		vim.schedule(vim.cmd.startinsert)
 	elseif term_win == vim.api.nvim_get_current_win() then
 		vim.api.nvim_win_close(term_win, true)
@@ -23,11 +23,32 @@ local function toggleterm()
 	end
 end
 
-vim.keymap.set("n", "<leader>lg", ":terminal lazygit<CR>")
 vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], { noremap = true })
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { noremap = true })
 vim.keymap.set({ "n", "i", "t" }, "<C-`>", toggleterm, { desc = "Toggle Terminal" })
 vim.keymap.set({ "n", "i", "t" }, "<C-_>", toggleterm, { desc = "Toggle Terminal (c-/)" })
+
+local function lazygit()
+	local prev_buf = vim.api.nvim_get_current_buf()
+	local win = vim.api.nvim_get_current_win()
+	vim.cmd("terminal lazygit")
+	local term_buf = vim.api.nvim_get_current_buf()
+	vim.keymap.set("t", "<Esc>", "<Esc>", { buffer = term_buf })
+	vim.cmd("startinsert")
+	vim.api.nvim_create_autocmd("TermClose", {
+		buffer = term_buf,
+		callback = function()
+			-- Switch the window back to your code/previous file
+			if vim.api.nvim_win_is_valid(win) and vim.api.nvim_buf_is_valid(prev_buf) then
+				vim.api.nvim_win_set_buf(win, prev_buf)
+			end
+
+			-- Force delete the terminal buffer to clean up
+			vim.api.nvim_buf_delete(term_buf, { force = true })
+		end,
+	})
+end
+vim.keymap.set("n", "<leader>lg", lazygit, { desc = "Open LazyGit" })
 
 vim.keymap.set("i", "<C-H>", "<C-W>", { desc = "Delete word" })
 vim.keymap.set("i", "<C-BS>", "<C-W>", { desc = "Delete word" })

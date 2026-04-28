@@ -32,6 +32,10 @@
       "rev": "b1d2b0dc146cb9260209da4d7ab754adb0a2653d",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
+    "lazygit.nvim": {
+      "rev": "a04ad0dbc725134edbee3a5eea29290976695357",
+      "src": "https://github.com/kdheepak/lazygit.nvim"
+    },
     "mason-lspconfig.nvim": {
       "rev": "0c2823e0418f3d9230ff8b201c976e84de1cb401",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
