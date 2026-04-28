@@ -7,6 +7,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 
 		"nvim-neotest/neotest-jest",
+		"marilari88/neotest-vitest",
 		{
 			"fredrikaverpil/neotest-golang",
 			version = "*",
@@ -30,6 +31,7 @@ return {
 					end,
 					isTestFile = require("neotest-jest.jest-util").defaultIsTestFile,
 				}),
+				require("neotest-vitest"),
 				require("neotest-golang")({ runner = "gotestsum" }),
 			},
 		})
