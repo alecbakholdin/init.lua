@@ -3,9 +3,10 @@ vim.pack.add({
 	{ src = "https://github.com/mason-org/mason.nvim" },
 	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
 	{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
-	{ src = "https://github.com/stevearc/conform.nvim" },
+	{ src = "https://github.com/stevearc/conform.nvim", version = "v9.1.0" },
 })
 
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
@@ -40,6 +41,10 @@ vim.lsp.config("lua_ls", {
 	},
 })
 
+vim.lsp.config("oxlint", {
+	cmd = { "oxlint", "--lsp" },
+})
+
 require("conform").setup({
 	format_on_save = {
 		-- These options will be passed to conform.format()
@@ -58,14 +63,18 @@ require("conform").setup({
 		markdown = { "prettierd" },
 	},
 	formatters = {
+		-- Force overwrite or define oxfmt baseline properties explicitly
 		oxfmt = {
-			-- Only run oxfmt if a config file is found in the project root
+			command = "oxfmt",
+			args = { "--stdin-filepath", "$FILENAME" },
+			stdin = true,
 			condition = function(self, ctx)
-				return vim.fs.find({
+				local found = vim.fs.find({
 					".oxfmtrc.json",
 					".oxfmtrc.jsonc",
 					"oxfmt.config.ts",
-				}, { path = ctx.filename, upward = true })[1] ~= nil
+				}, { path = ctx.filename, upward = true })
+				return #found > 0 -- Returns true if a configuration file actually exists
 			end,
 		},
 	},
