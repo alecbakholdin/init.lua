@@ -22,7 +22,8 @@
     },
     "conform.nvim": {
       "rev": "dca1a190aa85f9065979ef35802fb77131911106",
-      "src": "https://github.com/stevearc/conform.nvim"
+      "src": "https://github.com/stevearc/conform.nvim",
+      "version": "'v9.1.0'"
     },
     "dracula.nvim": {
       "rev": "ae752c13e95fb7c5f58da4b5123cb804ea7568ee",
