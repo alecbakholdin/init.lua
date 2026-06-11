@@ -25,6 +25,7 @@ end
 
 vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], { noremap = true })
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { noremap = true })
+vim.keymap.set({ "n", "i", "t" }, "<C-/>", toggleterm, { desc = "Toggle Terminal" })
 vim.keymap.set({ "n", "i", "t" }, "<C-`>", toggleterm, { desc = "Toggle Terminal" })
 vim.keymap.set({ "n", "i", "t" }, "<C-_>", toggleterm, { desc = "Toggle Terminal (c-/)" })
 
@@ -74,5 +75,5 @@ vim.keymap.set("n", "<C-.>", vim.lsp.buf.code_action)
 vim.keymap.set("i", "<C-.>", vim.lsp.buf.code_action)
 
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
+vim.keymap.set("n", "grt", vim.lsp.buf.type_definition)
 vim.keymap.set("n", "grn", vim.lsp.buf.rename)
