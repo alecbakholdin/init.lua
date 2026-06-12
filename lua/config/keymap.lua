@@ -77,3 +77,20 @@ vim.keymap.set("i", "<C-.>", vim.lsp.buf.code_action)
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 vim.keymap.set("n", "grt", vim.lsp.buf.type_definition)
 vim.keymap.set("n", "grn", vim.lsp.buf.rename)
+
+-- tab management
+vim.keymap.set("n", "<C-t>n", "<CMD>tabnew<CR>", { desc = "new tab" })
+vim.keymap.set("n", "<C-t>h", "<CMD>tabprevious<CR>", { desc = "previous tab" })
+vim.keymap.set("n", "<C-t>l", "<CMD>tabnext<CR>", { desc = "next tab" })
+vim.keymap.set("n", "<leader>]", "<CMD>tabnext<CR>", { desc = "next tab" })
+vim.keymap.set("n", "<leader>[", "<CMD>tabprevious<CR>", { desc = "previous tab" })
+vim.keymap.set("n", "<C-t>o", "<CMD>tabonly<CR>", { desc = "close all other tabs" })
+vim.keymap.set("n", "<C-t>x", "<CMD>tabonly<CR>", { desc = "close this tab" })
+vim.keymap.set("n", "<C-t>>", "<CMD>tabmove +1<CR>", { desc = "move tab right" })
+vim.keymap.set("n", "<C-t><", "<CMD>tabmove -1<CR>", { desc = "move tab left" })
+
+-- do <leader><number> for go to tab <number>
+for i = 1, 9 do
+	vim.keymap.set("n", "<leader>" .. i, i .. "gt", { desc = "Go to tab " .. i })
+end
+vim.keymap.set("n", "<leader>0", "<CMD>tablast<CR>", { desc = "Go to last tab" })
