@@ -12,13 +12,7 @@ require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
 	ensure_installed = {
 		"lua_ls",
-		"stylua",
 		"jsonls",
-		"eslint",
-		"eslint-lsp",
-		"prettierd",
-		"oxlint",
-		"oxfmt",
 	},
 })
 
@@ -43,6 +37,20 @@ vim.lsp.config("lua_ls", {
 
 vim.lsp.config("oxlint", {
 	cmd = { "oxlint", "--lsp" },
+})
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+	callback = function()
+		-- Look for an active oxlint LSP client attached to this current file buffer
+		local clients = vim.lsp.get_clients({ name = "oxlint", bufnr = 0 })
+		if #clients > 0 then
+			-- Synchronously request the language server to execute all available "fix all" fixes
+			vim.lsp.buf.code_action({
+				context = { only = { "source.fixAll.oxc" } },
+				apply = true,
+			})
+		end
+	end,
 })
 
 require("conform").setup({
