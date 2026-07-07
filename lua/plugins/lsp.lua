@@ -53,6 +53,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
+vim.filetype.add({ extension = { qml = "qmljs" } })
+
+vim.lsp.config("qmlls", {
+	cmd = { "qmlls", "-E", "-I", "/usr/lib/qt6/qml", "-I", vim.fn.expand("~/.config/quickshell") },
+})
+
 require("conform").setup({
 	format_on_save = {
 		-- These options will be passed to conform.format()
